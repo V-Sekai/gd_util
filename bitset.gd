@@ -4,7 +4,7 @@ var bitset: PoolByteArray = PoolByteArray()
 var first_available_index: int = 0
 
 func is_empty() -> bool:
-	for i in range(0, bitset.size()):
+	for _i in range(0, bitset.size()):
 		if bitset[0] != 0:
 			return false
 			

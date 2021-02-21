@@ -7,15 +7,15 @@ static func get_files_in_directory_path(p_path: String) -> Array:
 	var files: Array = []
 	var dir: Directory = Directory.new()
 	if dir.open(p_path) == OK:
-		dir.list_dir_begin()
-
+		assert(dir.list_dir_begin() == OK)
+		
 		while true:
 			var file: String = dir.get_next()
 			if file == "":
 				break
 			elif not (file.begins_with(".")) and not (dir.current_is_dir()):
 				files.append(file)
-
+				
 		dir.list_dir_end()
 	return files
 
@@ -25,7 +25,8 @@ static func get_files(
 	p_search_pattern: String,
 	p_search_options: int
 ) -> Array:
-	p_directory.list_dir_begin()
+	assert(p_directory.list_dir_begin() == OK)
+	
 	var current_file_name: String = ""
 	var valid_files: Array = []
 	current_file_name = p_directory.get_next()
@@ -45,7 +46,7 @@ static func get_files(
 						if appendable_files != null:
 							valid_files.append(appendable_files)
 		else:
-			if p_directory.file_exists(current_dir_path + '/' + current_file_name) == true:
+			if p_directory.file_exists(current_dir_path + '/' + current_file_name):
 				valid_files.append(current_dir_path + '/' + current_file_name)
 
 		current_file_name = p_directory.get_next()
@@ -53,7 +54,8 @@ static func get_files(
 	return valid_files
 
 static func delete_dir_and_contents(p_directory: Directory, current_dir_path: String, p_delete_root: bool) -> int:
-	p_directory.list_dir_begin()
+	assert(p_directory.list_dir_begin() == OK)
+	
 	var current_file_name: String = ""
 	var all_deleted: int = OK
 	current_file_name = p_directory.get_next()
