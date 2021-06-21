@@ -1,4 +1,5 @@
-extends EditorSpatialGizmo
+@tool
+extends EditorNode3DGizmo
 
 const immediate_shape_util_const = preload("immediate_shape_util.gd")
 
@@ -24,7 +25,7 @@ func commit_handle(index, restore, cancel = false):
 
 func redraw():
 	clear()
-	var icon_material = immediate_shape_util_const.create_icon_material(texture, Color())
+	var icon_material: Material = immediate_shape_util_const.create_icon_material(texture, Color())
 	add_unscaled_billboard(icon_material, 0.05)
 
 

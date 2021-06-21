@@ -1,7 +1,9 @@
-tool
-extends Reference
+@tool
 
-enum directory_search_options { SEARCH_ALL_DIRS, SEARCH_LOCAL_DIR_ONLY }
+enum DirectorySearchOptions {
+	SEARCH_ALL_DIRS,
+	SEARCH_LOCAL_DIR_ONLY
+}
 
 static func get_files_in_directory_path(p_path: String) -> Array:
 	var files: Array = []
@@ -13,7 +15,7 @@ static func get_files_in_directory_path(p_path: String) -> Array:
 			var file: String = dir.get_next()
 			if file == "":
 				break
-			elif not (file.begins_with(".")) and not (dir.current_is_dir()):
+			elif not file.begins_with(".") and not dir.current_is_dir():
 				files.append(file)
 				
 		dir.list_dir_end()
@@ -31,20 +33,21 @@ static func get_files(
 	var valid_files: Array = []
 	current_file_name = p_directory.get_next()
 
-	while ! current_file_name.empty():
+	while current_file_name != "":
 		if p_directory.current_is_dir():
 			if current_file_name != "." and current_file_name != "..":
-				if p_search_options == directory_search_options.SEARCH_ALL_DIRS:
-					var sub_directory = Directory.new()
-					if sub_directory.open(current_file_name):
-						var appendable_files = get_files(
-							sub_directory,
-							current_dir_path + '/' + current_file_name,
-							p_search_pattern,
-							p_search_options
-						)
-						if appendable_files != null:
-							valid_files.append(appendable_files)
+				match p_search_options:
+					DirectorySearchOptions.SEARCH_ALL_DIRS:
+						var sub_directory = Directory.new()
+						if sub_directory.open(current_file_name):
+							var appendable_files: Array = get_files(
+								sub_directory,
+								current_dir_path + '/' + current_file_name,
+								p_search_pattern,
+								p_search_options
+							)
+							if appendable_files.size() > 0:
+								valid_files.append(appendable_files)
 		else:
 			if p_directory.file_exists(current_dir_path + '/' + current_file_name):
 				valid_files.append(current_dir_path + '/' + current_file_name)
@@ -60,7 +63,7 @@ static func delete_dir_and_contents(p_directory: Directory, current_dir_path: St
 	var all_deleted: int = OK
 	current_file_name = p_directory.get_next()
 
-	while ! current_file_name.empty():
+	while current_file_name != "":
 		if p_directory.current_is_dir():
 			if current_file_name != "." and current_file_name != "..":
 				var sub_directory: Directory = Directory.new()

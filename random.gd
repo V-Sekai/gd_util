@@ -1,3 +1,5 @@
+@tool
+
 # Custom base64 table needed for directories
 const base64_table = [
 	"A",

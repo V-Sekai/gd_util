@@ -1,10 +1,10 @@
-extends EditorSpatialGizmo
+extends EditorNode3DGizmo
 
 const immediate_shape_util_const = preload("immediate_shape_util.gd")
 
-var plugin: EditorSpatialGizmoPlugin = null
+var plugin: EditorNode3DGizmoPlugin = null
 var camera: Node = null
-var material: SpatialMaterial = null
+var material: StandardMaterial3D = null
 
 static func _find_closest_angle_to_half_pi_arc(
 	p_from: Vector3, p_to: Vector3, p_arc_radius: float, p_arc_xform: Transform
@@ -19,7 +19,7 @@ static func _find_closest_angle_to_half_pi_arc(
 		var p: Vector3 = Vector3(cos(a), 0, -sin(a)) * p_arc_radius
 		var n: Vector3 = Vector3(cos(an), 0, -sin(an)) * p_arc_radius
 
-		var r: PoolVector3Array = Geometry.get_closest_points_between_segments(p, n, p_from, p_to)
+		var r: PackedVector3Array = Geometry3D.get_closest_points_between_segments(p, n, p_from, p_to)
 		var ra: Vector3 = r[0]
 		var rb: Vector3 = r[1]
 
@@ -40,7 +40,7 @@ func get_handle_value(p_idx: int) -> int:
 	return camera.get_fov()
 
 
-func set_handle(p_idx: int, p_camera: Camera, p_point: Vector2) -> void:
+func set_handle(p_idx: int, p_camera: Camera3D, p_point: Vector2) -> void:
 	var gt: Transform = camera.get_global_transform()
 	gt = gt.orthonormalized()
 	var gi: Transform = gt.affine_inverse()
@@ -48,7 +48,7 @@ func set_handle(p_idx: int, p_camera: Camera, p_point: Vector2) -> void:
 	var ray_from: Vector3 = p_camera.project_ray_origin(p_point)
 	var ray_dir: Vector3 = p_camera.project_ray_normal(p_point)
 
-	var s: Array = [gi.xform(ray_from), gi.xform(ray_from + ray_dir * 4096)]
+	var s: Array = [gi * ray_from, gi * (ray_from + ray_dir * 4096)]
 
 	gt = camera.get_global_transform()
 	var a: float = _find_closest_angle_to_half_pi_arc(s[0], s[1], 1.0, gt)
@@ -68,7 +68,7 @@ func commit_handle(p_idx: int, p_restore: bool, p_cancel: bool = false) -> void:
 	camera.property_list_changed_notify()
 
 
-func add_triangle(p_lines: PoolVector3Array, m_a: Vector3, m_b: Vector3, m_c: Vector3) -> PoolVector3Array:
+func add_triangle(p_lines: PackedVector3Array, m_a: Vector3, m_b: Vector3, m_c: Vector3) -> PackedVector3Array:
 	p_lines.push_back(m_a)
 	p_lines.push_back(m_b)
 	p_lines.push_back(m_b)
@@ -107,7 +107,7 @@ func redraw() -> void:
 	add_handles(handles, material)
 
 
-func _init(p_camera: Node, p_plugin: EditorSpatialGizmoPlugin, p_color: Color) -> void:
+func _init(p_camera: Node, p_plugin: EditorNode3DGizmoPlugin, p_color: Color):
 	camera = p_camera
 	plugin = p_plugin
 	set_spatial_node(camera)

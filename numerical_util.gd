@@ -1,5 +1,5 @@
+@tool
 extends Node
-tool
 
 static func get_string_for_integer_with_group_seperator(
 	p_integer: int, p_seperator: String, p_grouping_size: int

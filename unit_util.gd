@@ -1,4 +1,4 @@
-extends Reference
+@tool
 
 static func metres_to_feet(p_metres: float) -> float:
 	return p_metres * 3.2808

@@ -1,3 +1,4 @@
+@tool
 extends Reference
 
 const DATA_UNIT_SIZE_EXPONENTIAL = 1000
@@ -5,10 +6,10 @@ const DATA_UNIT_DECIMAL_MAX_SIZE = 100
 
 enum unit_types {
 	BYTES = 0,
-	KILOBYTES,
-	MEGABYTES,
-	GIGABYTES,
-	TERABYTES,
+	KILOBYTES = 1,
+	MEGABYTES = 2,
+	GIGABYTES = 3,
+	TERABYTES = 4,
 }
 
 const unit_type_string_table: Dictionary = {

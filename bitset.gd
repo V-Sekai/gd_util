@@ -1,6 +1,6 @@
 extends Reference
 
-var bitset: PoolByteArray = PoolByteArray()
+var bitset: PackedByteArray = PackedByteArray()
 var first_available_index: int = 0
 
 func is_empty() -> bool:
@@ -27,8 +27,8 @@ func set_bit(p_bit_index: int, p_enable: bool) -> void:
 		bitset[byte_position] &= ~(1 << remainder)
 
 
-func _init(p_size: int, p_enabled: bool) -> void:
-	bitset = PoolByteArray()
+func _init(p_size: int, p_enabled: bool):
+	bitset = PackedByteArray()
 	bitset.resize(((p_size) - 1 / 8) + 1)
 	if p_enabled:
 		for i in range(0, bitset.size()):

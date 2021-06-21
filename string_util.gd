@@ -1,7 +1,7 @@
-tool
+@tool
 
 static func string_ends_with(p_main_string: String, p_end_string: String) -> bool:
-	var pos: int = p_main_string.find_last(p_end_string)
+	var pos: int = p_main_string.rfind(p_end_string)
 	if pos == -1:
 		return false
 	return pos + p_end_string.length() == p_main_string.length()
@@ -24,7 +24,7 @@ static func fixstr(p_what: String, p_str: String) -> String:
 		return p_what.substr(0, p_what.length() - (p_str.length() + 1))
 	return p_what
 
-static func convert_string_pool_array_into_hint_string(p_array: PoolStringArray) -> String:
+static func convert_string_pool_array_into_hint_string(p_array: PackedStringArray) -> String:
 	var result: String = ""
 
 	for i in range(0, p_array.size()):

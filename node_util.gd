@@ -1,3 +1,4 @@
+@tool
 extends Node
 
 static func find_nodes_in_group(p_group: String, p_node: Node) -> Array:
@@ -14,16 +15,16 @@ static func find_nodes_in_group(p_group: String, p_node: Node) -> Array:
 
 	return valid_nodes
 
-static func set_relative_global_transform(p_root: Spatial, p_spatial: Spatial, p_gt: Transform) -> void:
-	if p_spatial.get_parent() == p_root:
-		p_spatial.set_transform(p_gt)
+static func set_relative_global_transform(p_root: Node3D, p_node3d: Node3D, p_gt: Transform) -> void:
+	if p_node3d.get_parent() == p_root:
+		p_node3d.set_transform(p_gt)
 	else:
-		p_spatial.set_transform(get_relative_global_transform(\
-		p_root, p_spatial.get_parent()).affine_inverse() * p_gt)
+		p_node3d.set_transform(get_relative_global_transform(\
+		p_root, p_node3d.get_parent()).affine_inverse() * p_gt)
 		
-static func get_relative_global_transform(p_root: Spatial, p_spatial: Spatial) -> Transform:
-	var parent: Spatial = p_spatial.get_parent()
+static func get_relative_global_transform(p_root: Node3D, p_node3d: Node3D) -> Transform:
+	var parent: Node3D = p_node3d.get_parent()
 	if parent and parent != p_root:
-		return get_relative_global_transform(p_root, parent) * p_spatial.transform
+		return get_relative_global_transform(p_root, parent) * p_node3d.transform
 	else:
-		return p_spatial.transform
+		return p_node3d.transform

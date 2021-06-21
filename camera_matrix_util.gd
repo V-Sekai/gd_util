@@ -1,11 +1,23 @@
-tool
-var matrix: PoolRealArray = PoolRealArray(
+@tool
+
+static func xform_plane(p_transform: Transform, p_plane: Plane) -> Plane:
+	var point: Vector3 = p_plane.normal * p_plane.d;
+	var point_dir: Vector3 = point + p_plane.normal;
+	point = p_transform * point
+	point_dir = p_transform * point_dir
+
+	var normal: Vector3 = (point_dir - point).normalized()
+	var d: float = normal.dot(point);
+
+	return Plane(normal, d)
+
+var matrix: PackedFloat64Array = PackedFloat64Array(
 	[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 )
 
 
 func set_identity() -> void:
-	matrix = PoolRealArray(
+	matrix = PackedFloat64Array(
 		[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 	)
 
@@ -14,7 +26,7 @@ static func get_fovy(p_fovx: float, p_aspect: float) -> float:
 	return rad2deg(atan(p_aspect * tan(deg2rad(p_fovx) * 0.5)) * 2.0)
 
 
-func get_endpoints() -> PoolVector3Array:
+func get_endpoints() -> PackedVector3Array:
 	# Near Plane
 	var near_plane: Plane = Plane(matrix[3] + matrix[2], matrix[7] + matrix[6], matrix[11] + matrix[10], -matrix[15] - matrix[14]).normalized()
 
@@ -30,7 +42,7 @@ func get_endpoints() -> PoolVector3Array:
 	var near_endpoint: Vector3 = near_plane.intersect_3(right_plane, top_plane)
 	var far_endpoint: Vector3 = far_plane.intersect_3(right_plane, top_plane)
 
-	var points_8: PoolVector3Array = PoolVector3Array()
+	var points_8: PackedVector3Array = PackedVector3Array()
 
 	points_8.push_back(Vector3(near_endpoint.x, near_endpoint.y, near_endpoint.z))
 	points_8.push_back(Vector3(near_endpoint.x, -near_endpoint.y, near_endpoint.z))
@@ -59,7 +71,7 @@ func get_projection_planes(p_transform: Transform) -> Array:
 	new_plane.normal = -new_plane.normal
 	new_plane = new_plane.normalized()
 
-	planes.push_back(p_transform.xform(new_plane))
+	planes.push_back(xform_plane(p_transform, new_plane))
 
 	# Far Plane
 	new_plane = Plane(
@@ -72,7 +84,7 @@ func get_projection_planes(p_transform: Transform) -> Array:
 	new_plane.normal = -new_plane.normal
 	new_plane = new_plane.normalized()
 
-	planes.push_back(p_transform.xform(new_plane))
+	planes.push_back(xform_plane(p_transform, new_plane))
 
 	# Left Plane
 	new_plane = Plane(
@@ -85,7 +97,7 @@ func get_projection_planes(p_transform: Transform) -> Array:
 	new_plane.normal = -new_plane.normal
 	new_plane = new_plane.normalized()
 
-	planes.push_back(p_transform.xform(new_plane))
+	planes.push_back(xform_plane(p_transform, new_plane))
 
 	# Top Plane
 	new_plane = Plane(
@@ -98,7 +110,7 @@ func get_projection_planes(p_transform: Transform) -> Array:
 	new_plane.normal = -new_plane.normal
 	new_plane = new_plane.normalized()
 
-	planes.push_back(p_transform.xform(new_plane))
+	planes.push_back(xform_plane(p_transform, new_plane))
 
 	# Right Plane
 	new_plane = Plane(
@@ -111,7 +123,7 @@ func get_projection_planes(p_transform: Transform) -> Array:
 	new_plane.normal = -new_plane.normal
 	new_plane = new_plane.normalized()
 
-	planes.push_back(p_transform.xform(new_plane))
+	planes.push_back(xform_plane(p_transform, new_plane))
 
 	# Bottom Plane
 	new_plane = Plane(
@@ -124,7 +136,7 @@ func get_projection_planes(p_transform: Transform) -> Array:
 	new_plane.normal = -new_plane.normal
 	new_plane = new_plane.normalized()
 
-	planes.push_back(p_transform.xform(new_plane))
+	planes.push_back(xform_plane(p_transform, new_plane))
 
 	return planes
 

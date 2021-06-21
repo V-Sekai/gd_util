@@ -1,3 +1,5 @@
+@tool
+
 static func does_script_inherit(p_script: Script, p_base_inheritance_script: Script):
 	var script: Script = p_script
 
