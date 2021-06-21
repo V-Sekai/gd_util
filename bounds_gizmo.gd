@@ -23,9 +23,9 @@ func get_handle_value(p_idx: int) -> Vector3:
 
 
 func set_handle(p_idx: int, p_camera: Camera3D, p_point: Vector2) -> void:
-	var gt: Transform = spatial.get_global_transform()
+	var gt: Transform3D = spatial.get_global_transform()
 	gt = gt.orthonormalized()
-	var gi: Transform = gt.affine_inverse()
+	var gi: Transform3D = gt.affine_inverse()
 
 	var aabb: AABB = spatial.get_bounds()
 	var ray_from: Vector3 = p_camera.project_ray_origin(p_point)
@@ -58,7 +58,7 @@ func commit_handle(p_idx: int, p_restore: bool, p_cancel: bool = false) -> void:
 		return
 
 	var ur: UndoRedo = plugin.get_undo_redo()
-	ur.create_action(tr("Change Box Shape Bounds"))
+	ur.create_action(tr("Change Box Shape3D Bounds"))
 	ur.add_do_method(spatial, "set_bounds", spatial.get_bounds())
 	ur.add_undo_method(spatial, "set_bounds", p_restore)  # !
 	ur.commit_action()

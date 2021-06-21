@@ -1,5 +1,5 @@
 @tool
-extends Reference
+extends RefCounted
 
 # Stopgap, used until 4.0
 

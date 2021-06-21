@@ -7,7 +7,7 @@ var camera: Node = null
 var material: StandardMaterial3D = null
 
 static func _find_closest_angle_to_half_pi_arc(
-	p_from: Vector3, p_to: Vector3, p_arc_radius: float, p_arc_xform: Transform
+	p_from: Vector3, p_to: Vector3, p_arc_radius: float, p_arc_xform: Transform3D
 ) -> float:
 	var arc_test_points: int = 64
 	var min_d: int = 1e20
@@ -41,9 +41,9 @@ func get_handle_value(p_idx: int) -> int:
 
 
 func set_handle(p_idx: int, p_camera: Camera3D, p_point: Vector2) -> void:
-	var gt: Transform = camera.get_global_transform()
+	var gt: Transform3D = camera.get_global_transform()
 	gt = gt.orthonormalized()
-	var gi: Transform = gt.affine_inverse()
+	var gi: Transform3D = gt.affine_inverse()
 
 	var ray_from: Vector3 = p_camera.project_ray_origin(p_point)
 	var ray_dir: Vector3 = p_camera.project_ray_normal(p_point)
@@ -61,7 +61,7 @@ func commit_handle(p_idx: int, p_restore: bool, p_cancel: bool = false) -> void:
 		camera.set("fov", p_restore)
 	else:
 		var ur = plugin.get_undo_redo()
-		ur.create_action("Change Camera FOV")
+		ur.create_action("Change Camera3D FOV")
 		ur.add_do_property(camera, "fov", camera.get_fov())
 		ur.add_undo_property(camera, "fov", p_restore)
 		ur.commit_action()

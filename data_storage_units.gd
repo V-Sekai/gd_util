@@ -1,5 +1,5 @@
 @tool
-extends Reference
+extends RefCounted
 
 const DATA_UNIT_SIZE_EXPONENTIAL = 1000
 const DATA_UNIT_DECIMAL_MAX_SIZE = 100

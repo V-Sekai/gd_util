@@ -1,6 +1,6 @@
 @tool
 
-static func xform_plane(p_transform: Transform, p_plane: Plane) -> Plane:
+static func xform_plane(p_transform: Transform3D, p_plane: Plane) -> Plane:
 	var point: Vector3 = p_plane.normal * p_plane.d;
 	var point_dir: Vector3 = point + p_plane.normal;
 	point = p_transform * point
@@ -56,7 +56,7 @@ func get_endpoints() -> PackedVector3Array:
 	return points_8
 
 
-func get_projection_planes(p_transform: Transform) -> Array:
+func get_projection_planes(p_transform: Transform3D) -> Array:
 	var planes: Array = []
 	var new_plane: Plane
 

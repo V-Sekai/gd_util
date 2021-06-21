@@ -1,4 +1,4 @@
-extends Reference
+extends RefCounted
 
 var bitset: PackedByteArray = PackedByteArray()
 var first_available_index: int = 0

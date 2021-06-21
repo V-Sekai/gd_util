@@ -87,7 +87,7 @@ static func immediate_cube(p_aabb: AABB, p_immediate_geometry: ImmediateGeometry
 	p_immediate_geometry.end()
 
 static func immediate_camera_frustum(
-	p_camera_matrix: Reference, p_immediate_geometry: ImmediateGeometry3D
+	p_camera_matrix: RefCounted, p_immediate_geometry: ImmediateGeometry3D
 ) -> void:
 	var end_points: PackedVector3Array = p_camera_matrix.get_endpoints()
 
