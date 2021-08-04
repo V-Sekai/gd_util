@@ -32,8 +32,59 @@ static func create_debug_material(p_color: Color) -> StandardMaterial3D:
 
 	return material
 
-static func create_debug_immediate() -> ImmediateGeometry3D:
-	var immediate_geometry: ImmediateGeometry3D = ImmediateGeometry3D.new()
+# Remove when Godot 4.x implements support for ImmediateGometry3D
+class StubImmediateGeometry3D:
+	extends MeshInstance3D
+
+	var verts_array: PackedVector3Array = PackedVector3Array()
+	var color_array: PackedColorArray = PackedColorArray()
+
+	func clear():
+		if not verts_array.is_empty():
+			is_dirty = true
+		verts_array = PackedVector3Array()
+		color_array = PackedColorArray()
+
+	var line_strip: int = 0
+	var cur_color: Color = Color.WHITE
+	var last_vert: Vector3 = Vector3.ZERO
+	var is_dirty: bool = false
+
+	func begin(mode):
+		if mode == Mesh.PRIMITIVE_LINE_STRIP:
+			line_strip = 1
+
+	func end():
+		is_dirty = true
+		line_strip = 0
+
+	func set_color(color: Color):
+		cur_color = color
+
+	func add_vertex(v: Vector3):
+		if line_strip > 2:
+			color_array.append(cur_color)
+			verts_array.append(last_vert)
+		color_array.append(cur_color)
+		verts_array.append(v)
+		last_vert = v
+		if line_strip > 0:
+			line_strip += 1
+
+	func _commit_arraymesh():
+		if is_dirty:
+			if mesh == null:
+				mesh = ArrayMesh.new()
+			mesh.clear_surfaces()
+			var arrays = []
+			arrays.resize(Mesh.ARRAY_MAX)
+			arrays[Mesh.ARRAY_COLOR] = color_array
+			arrays[Mesh.ARRAY_VERTEX] = verts_array
+			mesh.add_surface_from_arrays(Mesh.PRIMITIVE_LINES, arrays, [], {})
+			is_dirty = false
+
+static func create_debug_immediate() -> StubImmediateGeometry3D:
+	var immediate_geometry = StubImmediateGeometry3D.new()
 	immediate_geometry.set_cast_shadows_setting(GeometryInstance3D.SHADOW_CASTING_SETTING_OFF)
 	immediate_geometry.set_flag(GeometryInstance3D.FLAG_RECEIVE_SHADOWS, false)
 
@@ -42,7 +93,7 @@ static func create_debug_immediate() -> ImmediateGeometry3D:
 	immediate_geometry.set_material_override(material)
 	return immediate_geometry
 
-static func immediate_cube(p_aabb: AABB, p_immediate_geometry: ImmediateGeometry3D) -> void:
+static func immediate_cube(p_aabb: AABB, p_immediate_geometry: StubImmediateGeometry3D) -> void:
 	p_immediate_geometry.begin(Mesh.PRIMITIVE_LINES)
 
 	var aabb_min: Vector3 = p_aabb.position
@@ -85,9 +136,10 @@ static func immediate_cube(p_aabb: AABB, p_immediate_geometry: ImmediateGeometry
 	p_immediate_geometry.add_vertex(Vector3(aabb_min.x, aabb_max.y, aabb_min.z))
 
 	p_immediate_geometry.end()
+	p_immediate_geometry._commit_arraymesh()
 
 static func immediate_camera_frustum(
-	p_camera_matrix: RefCounted, p_immediate_geometry: ImmediateGeometry3D
+	p_camera_matrix: RefCounted, p_immediate_geometry: StubImmediateGeometry3D
 ) -> void:
 	var end_points: PackedVector3Array = p_camera_matrix.get_endpoints()
 
@@ -133,3 +185,4 @@ static func immediate_camera_frustum(
 	p_immediate_geometry.add_vertex(end_points[7])
 
 	p_immediate_geometry.end()
+	p_immediate_geometry._commit_arraymesh()
