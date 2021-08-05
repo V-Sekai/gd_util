@@ -126,7 +126,7 @@ func redraw() -> void:
 
 	add_lines(lines, material)
 	add_collision_segments(lines)
-	add_handles(handles, material)
+	add_handles(handles, material, PackedInt32Array()) # empty array = auto-assign ids
 
 
 func _init(p_spatial: Node, p_plugin: EditorNode3DGizmoPlugin, p_color: Color):
