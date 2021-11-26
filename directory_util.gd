@@ -79,14 +79,14 @@ static func delete_dir_and_contents(p_directory: Directory, current_dir_path: St
 						all_deleted = FAILED
 		else:
 			if p_directory.file_exists(current_dir_path + '/' + current_file_name):
-				if p_directory.remove_at(current_dir_path + '/' + current_file_name) == FAILED:
+				if p_directory.remove(current_dir_path + '/' + current_file_name) == FAILED:
 					all_deleted = FAILED
 
 		current_file_name = p_directory.get_next()
 
 	if p_delete_root:
 		if all_deleted == OK:
-			if p_directory.remove_at(current_dir_path) == FAILED:
+			if p_directory.remove(current_dir_path) == FAILED:
 				all_deleted = FAILED
 
 	return all_deleted
