@@ -69,7 +69,7 @@ const base64_table = [
 ]
 
 # Ad-hoc base64 generator
-static func generate_unique_id(p_size: int) -> String:
+static func generate_insecure_unique_id(p_size: int) -> String:
 	var string: String = ""
 
 	randomize()
