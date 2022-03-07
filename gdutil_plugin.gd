@@ -11,8 +11,8 @@ func _notification(p_notification: int):
 			print("Destroying GDUtil plugin")
 
 
-func get_name() -> String:
-	return "GDUtil"
+func get_name() -> StringName:
+	return &"GDUtil"
 
 
 func _enter_tree() -> void:
