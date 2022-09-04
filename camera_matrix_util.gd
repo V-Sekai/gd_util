@@ -23,7 +23,7 @@ func set_identity() -> void:
 
 
 static func get_fovy(p_fovx: float, p_aspect: float) -> float:
-	return rad2deg(atan(p_aspect * tan(deg2rad(p_fovx) * 0.5)) * 2.0)
+	return rad_to_deg(atan(p_aspect * tan(deg_to_rad(p_fovx) * 0.5)) * 2.0)
 
 
 func get_endpoints() -> PackedVector3Array:

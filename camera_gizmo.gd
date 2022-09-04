@@ -86,7 +86,7 @@ func redraw() -> void:
 
 	var fov: float = camera.get_fov()
 
-	var side: Vector3 = Vector3(sin(deg2rad(fov)), 0, -cos(deg2rad(fov)))
+	var side: Vector3 = Vector3(sin(deg_to_rad(fov)), 0, -cos(deg_to_rad(fov)))
 	var nside: Vector3 = side
 	nside.x = -nside.x
 	var up: Vector3 = Vector3(0, side.x, 0)
