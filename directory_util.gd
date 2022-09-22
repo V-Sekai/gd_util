@@ -7,8 +7,8 @@ enum DirectorySearchOptions {
 
 static func get_files_in_directory_path(p_path: String) -> Array:
 	var files: Array = []
-	var dir: Directory = Directory.new()
-	if dir.open(p_path) == OK:
+	var dir: DirAccess = DirAccess.open(p_path)
+	if dir != null:
 		assert(dir.list_dir_begin() == OK)
 		
 		while true:
@@ -22,7 +22,7 @@ static func get_files_in_directory_path(p_path: String) -> Array:
 	return files
 
 static func get_files(
-	p_directory: Directory,
+	p_directory: DirAccess,
 	current_dir_path: String,
 	p_search_pattern: String,
 	p_search_options: int
@@ -38,8 +38,8 @@ static func get_files(
 			if current_file_name != "." and current_file_name != "..":
 				match p_search_options:
 					DirectorySearchOptions.SEARCH_ALL_DIRS:
-						var sub_directory = Directory.new()
-						if sub_directory.open(current_file_name):
+						var sub_directory : DirAccess = DirAccess.open(current_file_name)
+						if sub_directory == null:
 							var appendable_files: Array = get_files(
 								sub_directory,
 								current_dir_path + '/' + current_file_name,
@@ -56,7 +56,7 @@ static func get_files(
 
 	return valid_files
 
-static func delete_dir_and_contents(p_directory: Directory, current_dir_path: String, p_delete_root: bool) -> int:
+static func delete_dir_and_contents(p_directory: DirAccess, current_dir_path: String, p_delete_root: bool) -> int:
 	assert(p_directory.list_dir_begin() == OK)
 	
 	var current_file_name: String = ""
@@ -66,8 +66,8 @@ static func delete_dir_and_contents(p_directory: Directory, current_dir_path: St
 	while current_file_name != "":
 		if p_directory.current_is_dir():
 			if current_file_name != "." and current_file_name != "..":
-				var sub_directory: Directory = Directory.new()
-				if sub_directory.open(current_file_name):
+				var sub_directory : DirAccess = DirAccess.open(current_file_name)
+				if sub_directory != null:
 					if (
 						delete_dir_and_contents(
 							p_directory, current_dir_path + '/' + current_file_name, false
