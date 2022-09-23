@@ -57,7 +57,7 @@ func commit_handle(p_idx: int, p_restore: bool, p_cancel: bool = false) -> void:
 		spatial.set_bounds(p_restore)  # !
 		return
 
-	var ur: UndoRedo = plugin.get_undo_redo()
+	var ur: EditorUndoRedoManager = plugin.get_undo_redo()
 	ur.create_action(tr("Change Box Shape3D Bounds"))
 	ur.add_do_method(spatial, "set_bounds", spatial.get_bounds())
 	ur.add_undo_method(spatial, "set_bounds", p_restore)  # !
