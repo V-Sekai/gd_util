@@ -32,4 +32,3 @@ func redraw():
 func _init(p_plugin, p_texture):
 	texture = p_texture
 	plugin = p_plugin
-	#set_spatial_node(camera)

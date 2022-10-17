@@ -134,4 +134,4 @@ func _init(p_spatial: Node, p_plugin: EditorNode3DGizmoPlugin, p_color: Color):
 	plugin = p_plugin
 	color = p_color
 
-	set_spatial_node(spatial)
+	set_node_3d(spatial)

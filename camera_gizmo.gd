@@ -110,5 +110,5 @@ func redraw() -> void:
 func _init(p_camera: Node, p_plugin: EditorNode3DGizmoPlugin, p_color: Color):
 	camera = p_camera
 	plugin = p_plugin
-	set_spatial_node(camera)
+	set_node_3d(camera)
 	material = immediate_shape_util_const.create_debug_material(p_color)
