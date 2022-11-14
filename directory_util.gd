@@ -33,7 +33,7 @@ static func get_files(
 	var valid_files: Array = []
 	current_file_name = p_directory.get_next()
 
-	while current_file_name != "":
+	while not current_file_name.is_empty():
 		if p_directory.current_is_dir():
 			if current_file_name != "." and current_file_name != "..":
 				match p_search_options:
@@ -63,7 +63,7 @@ static func delete_dir_and_contents(p_directory: DirAccess, current_dir_path: St
 	var all_deleted: int = OK
 	current_file_name = p_directory.get_next()
 
-	while current_file_name != "":
+	while not current_file_name.is_empty():
 		if p_directory.current_is_dir():
 			if current_file_name != "." and current_file_name != "..":
 				var sub_directory : DirAccess = DirAccess.open(current_file_name)
