@@ -6,9 +6,8 @@ var plugin: EditorNode3DGizmoPlugin = null
 var camera: Node = null
 var material: StandardMaterial3D = null
 
-static func _find_closest_angle_to_half_pi_arc(
-	p_from: Vector3, p_to: Vector3, p_arc_radius: float, p_arc_xform: Transform3D
-) -> float:
+
+static func _find_closest_angle_to_half_pi_arc(p_from: Vector3, p_to: Vector3, p_arc_radius: float, p_arc_xform: Transform3D) -> float:
 	var arc_test_points: int = 64
 	var min_d: int = 1e20
 	var min_p: Vector3
@@ -104,7 +103,7 @@ func redraw() -> void:
 
 	add_lines(lines, material)
 	add_collision_segments(lines)
-	add_handles(handles, material, PackedInt32Array()) # empty array = auto-assign ids
+	add_handles(handles, material, PackedInt32Array())  # empty array = auto-assign ids
 
 
 func _init(p_camera: Node, p_plugin: EditorNode3DGizmoPlugin, p_color: Color):

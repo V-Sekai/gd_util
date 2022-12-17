@@ -37,9 +37,7 @@ func set_handle(p_idx: int, p_camera: Camera3D, p_point: Vector2) -> void:
 	var axis: Vector3 = Vector3()
 	axis[p_idx] = 1.0
 
-	var result: PackedVector3Array = Geometry3D.get_closest_points_between_segments(
-		ofs, ofs + axis * 4096, sg[0], sg[1]
-	)
+	var result: PackedVector3Array = Geometry3D.get_closest_points_between_segments(ofs, ofs + axis * 4096, sg[0], sg[1])
 	var ra: Vector3 = result[0]
 	var rb: Vector3 = result[1]
 
@@ -126,7 +124,7 @@ func redraw() -> void:
 
 	add_lines(lines, material)
 	add_collision_segments(lines)
-	add_handles(handles, material, PackedInt32Array()) # empty array = auto-assign ids
+	add_handles(handles, material, PackedInt32Array())  # empty array = auto-assign ids
 
 
 func _init(p_spatial: Node, p_plugin: EditorNode3DGizmoPlugin, p_color: Color):

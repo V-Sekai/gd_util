@@ -2,6 +2,7 @@
 
 const camera_matrix_util_const = preload("camera_matrix_util.gd")
 
+
 static func create_icon_material(p_texture: Texture, p_albedo: Color) -> StandardMaterial3D:
 	var color: Color = p_albedo
 
@@ -17,6 +18,7 @@ static func create_icon_material(p_texture: Texture, p_albedo: Color) -> Standar
 
 	return icon
 
+
 static func create_debug_material(p_color: Color) -> StandardMaterial3D:
 	var material: StandardMaterial3D = StandardMaterial3D.new()
 
@@ -31,6 +33,7 @@ static func create_debug_material(p_color: Color) -> StandardMaterial3D:
 	#material.flags_no_depth_test = true
 
 	return material
+
 
 # Remove when Godot 4.x implements support for ImmediateGometry3D
 class StubImmediateGeometry3D:
@@ -83,6 +86,7 @@ class StubImmediateGeometry3D:
 			mesh.add_surface_from_arrays(Mesh.PRIMITIVE_LINES, arrays, [], {})
 			is_dirty = false
 
+
 static func create_debug_immediate() -> StubImmediateGeometry3D:
 	var immediate_geometry = StubImmediateGeometry3D.new()
 	immediate_geometry.set_cast_shadows_setting(GeometryInstance3D.SHADOW_CASTING_SETTING_OFF)
@@ -92,6 +96,7 @@ static func create_debug_immediate() -> StubImmediateGeometry3D:
 
 	immediate_geometry.set_material_override(material)
 	return immediate_geometry
+
 
 static func immediate_cube(p_aabb: AABB, p_immediate_geometry: StubImmediateGeometry3D) -> void:
 	p_immediate_geometry.begin(Mesh.PRIMITIVE_LINES)
@@ -138,9 +143,8 @@ static func immediate_cube(p_aabb: AABB, p_immediate_geometry: StubImmediateGeom
 	p_immediate_geometry.end()
 	p_immediate_geometry._commit_arraymesh()
 
-static func immediate_camera_frustum(
-	p_camera_matrix: RefCounted, p_immediate_geometry: StubImmediateGeometry3D
-) -> void:
+
+static func immediate_camera_frustum(p_camera_matrix: RefCounted, p_immediate_geometry: StubImmediateGeometry3D) -> void:
 	var end_points: PackedVector3Array = p_camera_matrix.get_endpoints()
 
 	p_immediate_geometry.begin(Mesh.PRIMITIVE_LINES)
