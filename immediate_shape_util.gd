@@ -7,10 +7,10 @@ static func create_icon_material(p_texture: Texture, p_albedo: Color) -> Standar
 	var color: Color = p_albedo
 
 	var icon: StandardMaterial3D = StandardMaterial3D.new()
-	icon.set_flag(StandardMaterial3D.FLAG_UNSHADED, true)
+	icon.shading_mode = StandardMaterial3D.SHADING_MODE_UNSHADED
 	icon.set_cull_mode(StandardMaterial3D.CULL_DISABLED)
 	icon.set_depth_draw_mode(StandardMaterial3D.DEPTH_DRAW_DISABLED)
-	icon.set_feature(StandardMaterial3D.FEATURE_TRANSPARENT, true)
+	icon.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_DEPTH_PRE_PASS
 	icon.set_albedo(color)
 	icon.set_texture(StandardMaterial3D.TEXTURE_ALBEDO, p_texture)
 	icon.set_flag(StandardMaterial3D.FLAG_FIXED_SIZE, true)
@@ -90,7 +90,6 @@ class StubImmediateGeometry3D:
 static func create_debug_immediate() -> StubImmediateGeometry3D:
 	var immediate_geometry = StubImmediateGeometry3D.new()
 	immediate_geometry.set_cast_shadows_setting(GeometryInstance3D.SHADOW_CASTING_SETTING_OFF)
-	immediate_geometry.set_flag(GeometryInstance3D.FLAG_RECEIVE_SHADOWS, false)
 
 	var material: Material = create_debug_material(Color(1.0, 1.0, 1.0))
 
