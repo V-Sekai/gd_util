@@ -20,7 +20,9 @@ static func get_files_in_directory_path(p_path: String) -> Array:
 	return files
 
 
-static func get_files(p_directory: DirAccess, current_dir_path: String, p_search_pattern: String, p_search_options: int) -> Array:
+static func get_files(
+	p_directory: DirAccess, current_dir_path: String, p_search_pattern: String, p_search_options: int
+) -> Array:
 	assert(p_directory.list_dir_begin() == OK)
 
 	var current_file_name: String = ""
@@ -34,7 +36,12 @@ static func get_files(p_directory: DirAccess, current_dir_path: String, p_search
 					DirectorySearchOptions.SEARCH_ALL_DIRS:
 						var sub_directory: DirAccess = DirAccess.open(current_file_name)
 						if sub_directory == null:
-							var appendable_files: Array = get_files(sub_directory, current_dir_path + "/" + current_file_name, p_search_pattern, p_search_options)
+							var appendable_files: Array = get_files(
+								sub_directory,
+								current_dir_path + "/" + current_file_name,
+								p_search_pattern,
+								p_search_options
+							)
 							if appendable_files.size() > 0:
 								valid_files.append(appendable_files)
 		else:
@@ -58,7 +65,10 @@ static func delete_dir_and_contents(p_directory: DirAccess, current_dir_path: St
 			if current_file_name != "." and current_file_name != "..":
 				var sub_directory: DirAccess = DirAccess.open(current_file_name)
 				if sub_directory != null:
-					if delete_dir_and_contents(p_directory, current_dir_path + "/" + current_file_name, false) == FAILED:
+					if (
+						delete_dir_and_contents(p_directory, current_dir_path + "/" + current_file_name, false)
+						== FAILED
+					):
 						all_deleted = FAILED
 					else:
 						all_deleted = FAILED
