@@ -4,16 +4,13 @@ extends EditorPlugin
 
 func _init():
 	print("Initialising GDUtil plugin")
+	name = &"GDUtil"
 
 
 func _notification(p_notification: int):
 	match p_notification:
 		NOTIFICATION_PREDELETE:
 			print("Destroying GDUtil plugin")
-
-
-func get_name() -> StringName:
-	return &"GDUtil"
 
 
 func _enter_tree() -> void:
